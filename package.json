@@ -1,0 +1,25 @@
+{
+  "name": "js-hw38",
+  "version": "1.0.0",
+  "description": "CRUD",
+  "type": "module",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx parcel src/index.html",
+    "build": "parcel build src/index.html --public-url /js-hw38/",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "server": "npx json-server src/data/students.json"
+  },
+  "keywords": [],
+  "author": "Vladyslav Buianov",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  },
+  "dependencies": {
+    "gh-pages": "^6.3.0",
+    "json-server": "^0.17.4"
+  }
+}
