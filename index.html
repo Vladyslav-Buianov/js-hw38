@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang=ua><meta charset=UTF-8><meta name=viewport content="width=device-width, initial-scale=1.0"><title>CRUD Students</title><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/3.0.1/modern-normalize.min.css integrity="sha512-q6WgHqiHlKyOqslT/lgBgodhd03Wp4BEqKeW6nNtlOY4quzyG3VoQKFrieaCeSnuVseNKRGpGeDU3qPmabCANg==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=/js-hw38/js-hw38.dc34fe8e.css><link rel=stylesheet href=/js-hw38/js-hw38.d2441bfc.css><body>
+    <div class=container>
+      <h1>Список студентів</h1>
+      <button id=get-students-btn>Отримати студентів</button>
+      <table id=students-table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ім'я</th>
+            <th>Вік</th>
+            <th>Курс</th>
+            <th>Навички</th>
+            <th>Email</th>
+            <th>Статус</th>
+            <th>Дії</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          
+        </tbody>
+      </table>
+      <button class=add-btn data-action=add>Додати нового студента</button>
+      <div class=backdrop>
+        <div class=modal>
+          <h2>Додати нового студента або оновити існуючого</h2>
+          <form id=student-form>
+            <label>Ім'я: <input id=name required></label>
+            <label>Вік: <input type=number id=age required></label>
+            <label>Курс: <input id=course required></label>
+            <label>Навички (через кому): <input id=skills required></label>
+            <label>Email: <input type=email id=email required></label>
+            <label>Записаний: <input type=checkbox id=isEnrolled></label>
+            <button>Додати або оновити студента</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script type=module src=/js-hw38/js-hw38.3a34ec68.js></script>
+  
