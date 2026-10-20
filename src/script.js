@@ -27,7 +27,7 @@ backdropRef.addEventListener("click", (evt) => {
   }
 });
 
-tableRef.addEventListener("click", (evt) => {
+tableRef.addEventListener("click", async (evt) => {
   if (evt.target.nodeName !== "BUTTON") {
     return;
   }
@@ -38,7 +38,9 @@ tableRef.addEventListener("click", (evt) => {
   const id = tr.dataset.id || tr.id;
 
   if (action === "delete") {
-    deleteStudents(id).then(() => renderList());
+    // deleteStudents(id).then(() => renderList());
+    await deleteStudents(id);
+    renderList();
     return;
   }
 
@@ -54,7 +56,7 @@ tableRef.addEventListener("click", (evt) => {
   }
 });
 
-formRef.addEventListener("submit", (evt) => {
+formRef.addEventListener("submit", async (evt) => {
   evt.preventDefault();
   const elements = evt.currentTarget.elements;
   const studentData = {
@@ -67,18 +69,27 @@ formRef.addEventListener("submit", (evt) => {
   };
 
   if (currentId === null) {
-    postStudents(studentData).then(() => {
-      renderList();
-      closeModal();
-      formRef.reset();
-    });
+    // postStudents(studentData).then(() => {
+    //   renderList();
+    //   closeModal();
+    //   formRef.reset();
+    // });
+    await postStudents(studentData);
+    renderList();
+    closeModal();
+    formRef.reset();
   } else {
-    updateStudents(studentData, currentId).then(() => {
-      renderList();
-      closeModal();
-      formRef.reset();
-      currentId = null;
-    });
+    // updateStudents(studentData, currentId).then(() => {
+    //   renderList();
+    //   closeModal();
+    //   formRef.reset();
+    //   currentId = null;
+    // });
+    await updateStudents(studentData, currentId);
+    renderList();
+    closeModal();
+    formRef.reset();
+    currentId = null;
   }
 });
 
@@ -91,8 +102,10 @@ function closeModal() {
   backdropRef.style.display = "none";
 }
 
-function renderList() {
-  getStudents().then((res) => {
-    tableRef.innerHTML = renderMarkup(res);
-  });
+async function renderList() {
+  // getStudents().then((res) => {
+  //   tableRef.innerHTML = renderMarkup(res);
+  // });
+  const res = await getStudents();
+  tableRef.innerHTML = renderMarkup(res);
 }

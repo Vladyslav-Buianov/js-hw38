@@ -1,4 +1,4 @@
-export const postStudents = (iceData) => {
+export const postStudents = async (iceData) => {
   const options = {
     method: "POST",
     body: JSON.stringify(iceData),
@@ -6,5 +6,7 @@ export const postStudents = (iceData) => {
       "Content-Type": "application/json; charset=UTF-8",
     },
   };
-  return fetch("http://localhost:3000/students",options).then((res)=>res.json());
+  const response = await fetch("http://localhost:3000/students",options);
+  const posted = await response.json();
+  return posted;
 };
