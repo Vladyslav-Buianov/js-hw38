@@ -736,14 +736,16 @@ addBtnRef.addEventListener("click", ()=>{
 backdropRef.addEventListener("click", (evt)=>{
     if (evt.target === backdropRef) closeModal();
 });
-tableRef.addEventListener("click", (evt)=>{
+tableRef.addEventListener("click", async (evt)=>{
     if (evt.target.nodeName !== "BUTTON") return;
     const action = evt.target.dataset.action;
     const tr = evt.target.closest("tr");
     if (!tr) return;
     const id = tr.dataset.id || tr.id;
     if (action === "delete") {
-        (0, _deleteStudents.deleteStudents)(id).then(()=>renderList());
+        // deleteStudents(id).then(() => renderList());
+        await (0, _deleteStudents.deleteStudents)(id);
+        renderList();
         return;
     }
     if (action === "edit") {
@@ -757,7 +759,7 @@ tableRef.addEventListener("click", (evt)=>{
         openModal();
     }
 });
-formRef.addEventListener("submit", (evt)=>{
+formRef.addEventListener("submit", async (evt)=>{
     evt.preventDefault();
     const elements = evt.currentTarget.elements;
     const studentData = {
@@ -768,17 +770,29 @@ formRef.addEventListener("submit", (evt)=>{
         email: elements.email.value.trim(),
         isEnrolled: elements.isEnrolled.checked
     };
-    if (currentId === null) (0, _postStudents.postStudents)(studentData).then(()=>{
+    if (currentId === null) {
+        // postStudents(studentData).then(() => {
+        //   renderList();
+        //   closeModal();
+        //   formRef.reset();
+        // });
+        await (0, _postStudents.postStudents)(studentData);
         renderList();
         closeModal();
         formRef.reset();
-    });
-    else (0, _updateStudents.updateStudents)(studentData, currentId).then(()=>{
+    } else {
+        // updateStudents(studentData, currentId).then(() => {
+        //   renderList();
+        //   closeModal();
+        //   formRef.reset();
+        //   currentId = null;
+        // });
+        await (0, _updateStudents.updateStudents)(studentData, currentId);
         renderList();
         closeModal();
         formRef.reset();
         currentId = null;
-    });
+    }
 });
 function openModal() {
     backdropRef.style.display = "flex";
@@ -787,18 +801,22 @@ function openModal() {
 function closeModal() {
     backdropRef.style.display = "none";
 }
-function renderList() {
-    (0, _getStudents.getStudents)().then((res)=>{
-        tableRef.innerHTML = (0, _renderMarkup.renderMarkup)(res);
-    });
+async function renderList() {
+    // getStudents().then((res) => {
+    //   tableRef.innerHTML = renderMarkup(res);
+    // });
+    const res = await (0, _getStudents.getStudents)();
+    tableRef.innerHTML = (0, _renderMarkup.renderMarkup)(res);
 }
 
 },{"./api/getStudents":"461i0","./markup/renderMarkup":"daQTY","./api/postStudents":"aVyB2","./api/deleteStudents":"at2F7","./api/updateStudents":"e9J9x"}],"461i0":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getStudents", ()=>getStudents);
-const getStudents = ()=>{
-    return fetch("http://localhost:3000/students").then((res)=>res.json());
+const getStudents = async ()=>{
+    const response = await fetch("http://localhost:3000/students");
+    const students = await response.json();
+    return students;
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"jnFvT":[function(require,module,exports,__globalThis) {
@@ -860,7 +878,7 @@ function renderMarkup(itms) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "postStudents", ()=>postStudents);
-const postStudents = (iceData)=>{
+const postStudents = async (iceData)=>{
     const options = {
         method: "POST",
         body: JSON.stringify(iceData),
@@ -868,32 +886,38 @@ const postStudents = (iceData)=>{
             "Content-Type": "application/json; charset=UTF-8"
         }
     };
-    return fetch("http://localhost:3000/students", options).then((res)=>res.json());
+    const response = await fetch("http://localhost:3000/students", options);
+    const posted = await response.json();
+    return posted;
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"at2F7":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "deleteStudents", ()=>deleteStudents);
-const deleteStudents = (id)=>{
-    return fetch(`http://localhost:3000/students/${id}`, {
+const deleteStudents = async (id)=>{
+    const deleting = await fetch(`http://localhost:3000/students/${id}`, {
         method: "DELETE"
-    }).then((res)=>res.json());
+    });
+    const deleted = await deleting.json();
+    return deleted;
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"e9J9x":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "updateStudents", ()=>updateStudents);
-const updateStudents = (iceData, id)=>{
+const updateStudents = async (studentsData, id)=>{
     const options = {
         method: "PUT",
-        body: JSON.stringify(iceData),
+        body: JSON.stringify(studentsData),
         headers: {
             "Content-Type": "application/json; charset=UTF-8"
         }
     };
-    return fetch(`http://localhost:3000/students/${id}`, options).then((res)=>res.json());
+    const response = await fetch(`http://localhost:3000/students/${id}`, options);
+    const updated = await response.json();
+    return updated;
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["7SvX3","kyksZ"], "kyksZ", "parcelRequiree5a2", {})
